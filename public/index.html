@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Validar cupon por email</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+  <h1>Validar cupón por email:</h1>
+  <input id="email_hotmart" type="text" value="" placeholder="email">
+  <div id="datos" style="margin-top: 20px;"></div>
+  <script>
+    var password = prompt("Por favor, ingrese la contraseña:");
+
+    // Verificar si la contraseña es correcta
+    if (password != "cmas-cupones") {
+      window.location.reload();
+    }
+    document.querySelector("#email_hotmart").addEventListener('keyup', function (e) {
+      if (e.key === 'Enter' || e.keyCode === 13) {
+        let email = e.target.value;
+        if (!email) return false
+
+        axios.get(`/user/finduser/${email}`).then((response) => {
+          const resultado = document.getElementById('datos')
+          resultado.innerHTML="";
+          console.log(response);
+          console.log(response.data.user);
+          const user = response.data.user;
+          console.log(user.email);
+          for (const key in user) {
+            const li = document.createElement('li');
+            li.innerText = `${key}: ${user[key]}`;
+            resultado.appendChild(li);
+          }
+        })
+
+      }
+    })
+
+
+
+  </script>
+</body>
+
+</html>
